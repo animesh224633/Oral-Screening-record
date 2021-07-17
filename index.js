@@ -4,10 +4,10 @@ const path = require("path");
 const connect = require("./db/connect");
 const Details = require("./db/userSchema");
 const Doctor = require("./db/doctorSchema");
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3000;
 
 connect();
-app.listen(port, () => console.log(`Server started at ${port}`));
+app.listen(port, () => console.log("Server started at 3000"));
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -101,15 +101,10 @@ app.post("/details", (req, res) => {
     pufa_index,
     dmft_index,
     mucosal,
-    question,
+    questions,
   } = req.body;
 
-  Details.findOne({slno: sl_no}, function(err, data){
-    if(err){
-      res.json({msg: "Failed"});
-    }
-    if(data === null){
-    const details = new Details({
+  const details = new Details({
     slno: sl_no,
     title: id_title,
     first_name: id_first_name,
@@ -138,16 +133,10 @@ app.post("/details", (req, res) => {
     mucosal,
     pufa_index,
     dmft_index,
-    question,
   });
   details
     .save()
     .then((result) => console.log("Data saved"))
     .catch((err) => console.log(err));
   res.json({ msg: "Thank you" });
-    }
-    else{
-      res.json({msg: "Sl_no already exists"});
-    }
-  });
 });
